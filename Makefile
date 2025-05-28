@@ -33,7 +33,7 @@ test:
 	go test -v
 
 image:
-	docker build --platform linux/${TARGETARCH} -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH} --build-arg TARGETARCH=$(TARGETARCH) .
+	docker build --platform linux/${TARGETARCH} -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH} --build-arg TARGETARCH=${TARGETARCH} .
 
 push:
 	docker push ${IMAGEREGISTRY}/${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
