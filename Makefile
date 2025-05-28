@@ -15,16 +15,16 @@ build: format get
 	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o kbot -ldflags "-X"=github.com/sigella/kbot/cmd.appVersion=${VERSION}
 
 linux:
-	@${MAKE} build TARGETOS=linux GOARCH=${TARGETARCH}
+	@${MAKE} build TARGETOS=linux TARGETARCH=${TARGETARCH}
 
 macos:
-	@${MAKE} build TARGETOS=darwin GOARCH=${TARGETARCH}
+	@${MAKE} build TARGETOS=darwin TARGETARCH=${TARGETARCH}
 
 windows:
-	@${MAKE} build TARGETOS=windows GOARCH=${TARGETARCH}
+	@${MAKE} build TARGETOS=windows TARGETARCH=${TARGETARCH}
 
 arm:
-	@${MAKE} build TARGETOS=linux GOARCH=arm64
+	@${MAKE} build TARGETOS=linux TARGETARCH=arm64
 
 lint:
 	golint
