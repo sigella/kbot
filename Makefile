@@ -12,19 +12,19 @@ get:
 	go get
 
 build: format get
-	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o kbot -ldflags "-X"=github.com/sigella/kbot/cmd.appVersion=${VERSION}
+	CGO_ENABLED=0 GOOS=$(TARGETOS) GOARCH=$(TARGETARCH) go build -v -o kbot -ldflags "-X"=github.com/sigella/kbot/cmd.appVersion=$(VERSION)
 
 linux:
-	@${MAKE} build GOOS=linux GOARCH=${TARGETARCH}
+	@$(MAKE) build GOOS=linux GOARCH=$(TARGETARCH)
 
 macos:
-	@${MAKE} build GOOS=darwin GOARCH=${TARGETARCH}
+	@$(MAKE) build GOOS=darwin GOARCH=$(TARGETARCH)
 
 windows:
-	@${MAKE} build GOOS=windows GOARCH=${TARGETARCH}
+	@$(MAKE) build GOOS=windows GOARCH=$(TARGETARCH)
 
 arm:
-	@${MAKE} build GOOS=linux GOARCH=arm64
+	@$(MAKE) build GOOS=linux GOARCH=arm64
 
 lint:
 	golint
@@ -33,11 +33,11 @@ test:
 	go test -v
 
 image:
-	docker build --platform linux/${TARGETARCH} -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH} --build-arg TARGETARCH=${TARGETARCH} .
+	docker build --platform linux/$(TARGETARCH) -t $(REGISTRY)/$(APP):$(VERSION)-$(TARGETARCH) --build-arg TARGETARCH=$(TARGETARCH) .
 
 push:
-	docker push ${IMAGEREGISTRY}/${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
+	docker push $(IMAGEREGISTRY)/$(REGISTRY)/$(APP):$(VERSION)-$(TARGETARCH)
 
 clean:
 	rm -rf kbot
-	docker rmi $(REGISTRY)/$(APP):$(VERSION)-$(TARGETARCH) || true
+	docker rmi $(REGISTRY)/$(APP):$(VERSION)-$(TARGETARCH)) || true
