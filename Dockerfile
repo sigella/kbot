@@ -1,7 +1,8 @@
 FROM --platform=linux/${TARGETARCH} quay.io/projectquay/golang:1.24 AS builder
 WORKDIR /go/src/app
 COPY . .
-RUN make build
+ARG TARGETARCH
+RUN make build TARGETARCH=${TARGETARCH:-arm64}
 
 FROM scratch
 WORKDIR /
