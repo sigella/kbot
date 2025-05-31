@@ -3,7 +3,14 @@ REGISTRY = sigella
 IMAGEREGISTRY = ghcr.io
 VERSION = $(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short  HEAD)
 TARGETOS ?= linux						# linux, darwin, windows
-TARGETARCH ?= $(shell uname -m)						# arm64, amd64
+#TARGETARCH ?= $(shell uname -m)						# arm64, amd64
+
+# Set target architecture and toolchain if cross-compiling
+ifeq ($(shell uname -m),x86_64)
+    TARGETARCH = amd64
+else
+	TARGETARCH = $(shell uname -m)
+endif
 
 format:
 	gofmt -s -w ./
@@ -15,16 +22,16 @@ build: format get
 	CGO_ENABLED=0 GOOS=$(TARGETOS) GOARCH=$(TARGETARCH) go build -v -o kbot -ldflags "-X"=github.com/sigella/kbot/cmd.appVersion=$(VERSION)
 
 linux:
-	@$(MAKE) build GOOS=linux GOARCH=$(TARGETARCH)
+	@$(MAKE) build TARGETOS=linux TARGETARCH=$(TARGETARCH)
 
 macos:
-	@$(MAKE) build GOOS=darwin GOARCH=$(TARGETARCH)
+	@$(MAKE) build TARGETOS=darwin TARGETARCH=$(TARGETARCH)
 
 windows:
-	@$(MAKE) build GOOS=windows GOARCH=$(TARGETARCH)
+	@$(MAKE) build TARGETOS=windows TARGETARCH=$(TARGETARCH)
 
 arm:
-	@$(MAKE) build GOOS=linux GOARCH=arm64
+	@$(MAKE) build TARGETOS=linux TARGETARCH=arm64
 
 lint:
 	golint
