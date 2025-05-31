@@ -3,7 +3,6 @@ WORKDIR /go/src/app
 COPY . .
 ARG TARGETARCH
 RUN make build TARGETARCH=${TARGETARCH}
-#RUN make build TARGETARCH=${TARGETARCH:-arm64}
 
 FROM scratch
 WORKDIR /

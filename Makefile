@@ -3,7 +3,7 @@ REGISTRY = sigella
 IMAGEREGISTRY = ghcr.io
 VERSION = $(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short  HEAD)
 TARGETOS ?= linux						# linux, darwin, windows
-TARGETARCH ?= amd64						# arm64, amd64
+TARGETARCH ?= $(shell uname -m)						# arm64, amd64
 
 format:
 	gofmt -s -w ./
